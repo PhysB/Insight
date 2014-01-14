@@ -60,16 +60,27 @@
     </script>
     <script type="text/javascript"
       src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=true"></script>
+    
+    <!-- This is my Google maps javascript stuff-->
     <script type="text/javascript">
       var directionsDisplay;
       var directionsService = new google.maps.DirectionsService();
       var map;  
-
+      var placeSearch, autocomplete_start, autocomplete_end;
+      
       function initialize() {
+        //Auto-complete box to get start address
+        autocomplete_start = new google.maps.places.Autocomplete(
+      /** @type {HTMLInputElement} */(document.getElementById('start')),
+      { types: ['geocode'] });
+        //Auto-complete box to get end address
+        autocomplete_end = new google.maps.places.Autocomplete(
+      /** @type {HTMLInputElement} */(document.getElementById('end')),
+      { types: ['geocode'] });
         directionsDisplay = new google.maps.DirectionsRenderer();
-        var chicago = new google.maps.LatLng(41.850033, -87.6500523);
+        var sf = new google.maps.LatLng(37.774, -122.419);
         var mapOptions = {
-          center: chicago,
+          center: sf,
           zoom: 7
         }
         map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
@@ -97,7 +108,7 @@
           optimizeWaypoints: true,
           travelMode: google.maps.TravelMode[selectedMode]
         };
-        
+        debugger
         directionsService.route(request, function(response, status) {
          if (status == google.maps.DirectionsStatus.OK) {
           directionsDisplay.setDirections(response);
@@ -107,6 +118,8 @@
       
       google.maps.event.addDomListener(window, 'load', initialize);
     </script>
+  
+
     
   </head>
 
@@ -151,36 +164,19 @@
         <option value="DRIVING">Driving</option>
         <option value="WALKING">Walking</option>
         <option value="BICYCLING">Bicycling</option>
-        <option value="TRANSIT">Transit</option>
       </select>
     <br>
-      <b>Start:</b>
-      <select id="start">
-        <option value="Halifax, NS">Halifax, NS</option>
-        <option value="Boston, MA">Boston, MA</option>
-        <option value="New York, NY">New York, NY</option>
-        <option value="Miami, FL">Miami, FL</option>
-      </select>
+      <b>Start</b><br>
+    <input id="start" placeholder="Enter your start address" type="text" size="50"></input>
     <br>
       <b>Waypoints:</b> <br>
-      <i>(Ctrl-Click for multiple selection)</i> <br>
-      <select multiple id="waypoints">
-        <option value="montreal, quebec">Montreal, QBC</input>
-        <option value="toronto, ont">Toronto, ONT</input>
-        <option value="chicago, il">Chicago</input>
-        <option value="winnipeg, mb">Winnipeg</input>
-        <option value="fargo, nd">Fargo</input>
-        <option value="calgary, ab">Calgary</input>
-        <option value="spokane, wa">Spokane</input>
-      </select>
+      <input id="moviesearch" type="text" placeholder="Movie title" size="50">
+        <button id="findmovie">Search</button>
+        <p>Here are your waypoints.</p>
+        <p id="waypoints"></p>
     <br>
-      <b>End:</b>
-      <select id="end">
-        <option value="Vancouver, BC">Vancouver, BC</option>
-        <option value="Seattle, WA">Seattle, WA</option>
-        <option value="San Francisco, CA">San Francisco, CA</option>
-        <option value="Los Angeles, CA">Los Angeles, CA</option>
-      </select>
+      <b>End</b><br>
+    <input id="end" placeholder="Enter your end address" type="text" size="50"></input>
     <br>
       <input type="submit" onclick="calcRoute();">
     </div>
@@ -191,5 +187,18 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="static/dist/js/bootstrap.min.js"></script>
+      <!--This is my database javascript stuff -->
+    <script src="static/dist/js/data.js"></script>
+    <script>
+    // Search send (press enter) - jquery
+    $(document).ready(function(){
+      $('#findmovie').click(function() {
+         var movie = $(this).val();
+         $.getJSON('waypoints', function(result) {
+              $('#waypoints').html(result);
+              });
+      });
+    });
+  </script>
   </body>
 </html>
