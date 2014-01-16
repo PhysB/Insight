@@ -14,7 +14,7 @@ def hello():
 def waypoints():
     movie = request.args.get('title', '')
     thisquery = 'SELECT latitude,longitude FROM sf_locations WHERE title="%s";' % movie
-    print thisquery
+    #print thisquery
     db.query(thisquery)
     query_results = db.store_result().fetch_row(maxrows=0)
     print query_results
