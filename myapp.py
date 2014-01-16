@@ -1,6 +1,6 @@
 
 import os, json
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import MySQLdb
 
 app = Flask(__name__)
@@ -10,38 +10,18 @@ db = MySQLdb.connect(user="root", host="localhost", port=3306, db="movie_locatio
 def hello():
     return render_template('index.html') 
 
-#@app.route("/db")
-#def cities_page():
-#    db.query("SELECT Name FROM city;")
-#
-#    query_results = db.store_result().fetch_row(maxrows=0)
-#    cities = ""
-#    for result in query_results:
-#        cities += unicode(result[0], 'utf8')
-#        cities += "<br>"
-#    return cities
-#
-#@app.route("/db_fancy")
-#def cities_page_fancy():
-#    db.query("SELECT Name, CountryCode, Population FROM city;")
-#
-#    query_results = db.store_result().fetch_row(maxrows=0)
-#    cities = []
-#    for result in query_results:
-#        cities.append(dict(name=unicode(result[0], 'utf8'), country=result[1], population=result[2]))
-#    return render_template('cities.html', cities=cities) 
-
 @app.route('/waypoints')
 def waypoints():
-    db.query("SELECT locations,city,state FROM sf_locations WHERE title='Vertigo';")
+    movie = request.args.get('title', '')
+    thisquery = 'SELECT latitude,longitude FROM sf_locations WHERE title="%s";' % movie
+    print thisquery
+    db.query(thisquery)
     query_results = db.store_result().fetch_row(maxrows=0)
-    #return json.dumps({"this": "works!"})
-    locations = ""
-    for result in query_results:
-        address = result[0] + ', ' + result[1]+', '+result[2]
-        locations += unicode(address, 'utf8')
-        locations += "<br>"
-    return json.dumps(locations)
+    print query_results
+    address = []
+    for i,result in enumerate(query_results):
+        address.append({str(i): (float(result[0]),float(result[1]))})
+    return json.dumps(address)
 
 @app.route('/<pagename>') 
 def regularpage(pagename=None): 
