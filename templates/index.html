@@ -28,7 +28,7 @@
     <style type="text/css">
       html { height: 100% }
       body { height: 100%; margin: 0; padding: 0 }
-      #map-canvas { height: 100%; float: right; width: 70% }
+      #map-canvas { height: 80%; float: right; width: 70%; padding:1 }
       #control_panel {
         float: left;
         width: 30%;
@@ -63,8 +63,7 @@
     <script type="text/javascript">
       var sf = new google.maps.LatLng(37.7771187, -122.4196396);
 
-      var markers = [];
-      var iterator = 0;
+      
       var geocoder;
       var map;
       var waypoints;
@@ -72,52 +71,113 @@
       var latitude;
       var location;
       
-      var movie_latlong = [];
+      var movie_latlong;
+      var bounds;
+      var markers;
+      var iterator;
       
       function initialize() {
-        geocoder = new google.maps.Geocoder();
+        movie_latlong = [];
+        markers = [];
+        iterator = 0;
         var mapOptions = {
           center: sf,
-          zoom: 10
+          zoom: 12
         }
         map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
       }
       
+      function seeMarkers() {
+        bounds = map.getBounds();
+        //console.log(markers.length)
+        var min_lat = map.getCenter().lat();
+        var max_lat = map.getCenter().lat();
+        var min_lng = map.getCenter().lng();
+        var max_lng = map.getCenter().lng();
+        
+        for (var i=0; i<movie_latlong.length; i++) {
+          console.log('got here')
+        // Some functionality to recenter the map
+          thislat = movie_latlong[i].lat();
+          thislng = movie_latlong[i].lng();
+          
+          if (thislat<min_lat) {
+            min_lat = thislat
+          }
+          if (thislat>max_lat) {
+            max_lat = thislat
+          }
+          if (thislng<min_lng) {
+            min_lng = thislng
+          }
+          if (thislng>max_lng) {
+            max_lng = thislng
+          }
+          //if ( !map.getBounds().contains(movie_latlong[i]) ) {
+          //  console.log('Adjust the map!')
+          //    bounds.extend(movie_latlong[i]);
+          //    var newCenterPointLng = (map.getBounds().getCenter().lng() + marker.getPosition().lng()) / 2;
+          //    var newCenterPointLat = (map.getBounds().getCenter().lat() + marker.getPosition().lat()) / 2;
+          //    map.panTo(marker.getPosition());
+          //    map.setCenter(new google.maps.LatLng(newCenterPointLat, newCenterPointLng));
+          //    if (!map.getBounds().contains(marker.getPosition())){
+          //      z = map.getZoom();
+          //      map.setZoom(z-1);
+          //    }
+          }
+         var sw = new google.maps.LatLng(min_lat, min_lng); 
+         var ne = new google.maps.LatLng(max_lat, max_lng);
+         var newbounds = new google.maps.LatLngBounds(sw,ne)
+         
+         map.fitBounds(newbounds)
+        }
+        
+        //if (map.getZoom()>12) {
+        //  map.setZoom(12);
+        //}
+
+      
       function createMarkerlist(){
-        waypoints = document.getElementById("points")
+        //waypoints = document.getElementById("points")
         JSONwaypoints = eval(points.value);
         for (pair in JSONwaypoints) {
           latitude = JSONwaypoints[pair][pair][0];
           longitude = JSONwaypoints[pair][pair][1];
           movie_latlong.push(new google.maps.LatLng(latitude, longitude))
         }
-        console.log("Creating new Marker List")
+        //console.log("Creating new Marker List")
       }
       
       function drop() {
         deleteMarkers()
         createMarkerlist()
+        seeMarkers();
         for (var i = 0; i < movie_latlong.length; i++) {
           setTimeout(function() {
-            addMarker();
+            markers = addMarker();
           }, i * 200);
         }
+
+
       }
 
       function addMarker() {
-        markers.push(new google.maps.Marker({
+
+        marker = new google.maps.Marker({
         position: movie_latlong[iterator],
         map: map,
         draggable: true,
         animation: google.maps.Animation.DROP
-        }));
+        });
+        markers.push(marker);
         iterator++;
-        console.log("Adding markers.")
+        return markers
       }
+      
       
       function clearMarkers() {
         setAllMap(null);
-        console.log("Clearing markers")
+        //console.log("Clearing markers")
       }
       
       // Deletes all markers in the array by removing references to them.
@@ -126,7 +186,7 @@
         movie_latlong = [];
         markers = [];
         iterator = 0;
-        console.log("Deleting markers")
+        //console.log("Deleting markers")
       } 
     
       function setAllMap(map) {
@@ -186,6 +246,9 @@
         <div id="points"></div>
     </div>
     </div>
+    <div class="starter-template">
+        <p>Some other text about the web app.</p>
+      </div>
     <div id="directions-panel"></div>
     <!-- Bootstrap core JavaScript
     ================================================== -->
