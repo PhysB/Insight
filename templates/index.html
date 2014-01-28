@@ -7,13 +7,20 @@
       <div class="page-header">   
       <h1>On Location</h1>
       </div>
-      <p class="lead">Search for your address to get filming locations near you.</p>
-      <input id="address_search" type="text" placeholder="Address" size="50">
-      <br>
-      <button id="getmovie" onclick='getMovie();'>Get Movies Near Me</button>
     </div>
   </div>
 </div><!-- /.container -->
 
-<div class="well"><div id="map-canvas"></div>
+<div id="controlpanel">
+  <center>
+      <p class="lead">Search for your address to get filming locations near you.</p>
+      <input id="address_search" type="text" placeholder="Address" size=40%>
+      <br>
+      <button id="getmovie" onclick='getMovie();'>Get Movies Near Me</button>
+  </center>
+</div>
+
+<div id="mappanel">
+  <div class="well"><div id="map-canvas"></div>
+</div>
 {% endblock %}
