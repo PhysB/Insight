@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+  <div class="starter-template">
+    <h1>On Location</h1>
+      <p class="lead">Search for a movie in the text box and then click Drop to see the locations.</p>
+  </div>
+</div><!-- /.container -->
+
+
+<div id="map-canvas"></div>
+
+<div id="control_panel">
+  <div style="margin:20px;border-width:2px;">
+    <b>Search for a movie</b>:</b> <br>
+    <input id="moviesearch" type="text" placeholder="Movie title" size="50">
+    <button id="findmovie" onclick='drop();'>Search</button>
+    <div id="points"></div>
+  </div>
+</div>
+
+<div class="starter-template">
+  <p id="display_movie">Some other text about the web app.</p>
+</div>
+
+{% endblock %}

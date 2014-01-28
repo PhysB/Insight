@@ -1,0 +1,89 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0", user-scalable="no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="static/dist/docs-assets/ico/favicon.png">
+      
+    <title>On Location</title>
+    
+
+    <!-- Bootstrap core CSS -->
+<!--    <link href="static/dist/css/bootstrap.css" rel="stylesheet">-->
+    <link rel="stylesheet" href="static/dist/css/bootstrap.css" media="screen">
+    <!-- Custom styles for this template -->
+<!--    <link href="static/dist/css/bootstrap-theme.css" rel="stylesheet">-->
+    <!--<link href="static/dist/css/bootswatch.min.css">-->
+    <link href="http://twitter.github.io/typeahead.js/css/examples.css" rel="stylesheet">
+      
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+    <script src="static/dist/js/onlocation.js"></script>
+    
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map-canvas { height: 80%;
+        /*float: right;*/
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+        padding:3;
+        margin-top: auto;}
+
+    </style>    
+  </head>
+  
+  <body onload='loadScript()'>
+    <!-- NAVBAR STUFF -->
+    <div class="navbar navbar-default navbar-fixed-top">
+      <!--<div class="container">-->
+        <div class="navbar-header">
+<!--          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-main">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>-->
+          <a class="navbar-brand" href="#">On Location</a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-main">
+          <ul class="nav navbar-nav">
+            <li><a href="/">Home</a></li>
+            <li><a href="altsearch">Movie Search</a></li>
+            <li><a href="about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      <!--</div>-->
+    </div>
+    
+    
+    
+    {% block content %}{% endblock %}
+    
+    <!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script src="static/dist/js/bootstrap.min.js"></script>
+<!--  <link href="http://twitter.github.io/typeahead.js/css/examples.css" rel="stylesheet">-->
+  <script src="static/dist/js/typeahead.min.js"></script>
+  <script>
+  $('#moviesearch').typeahead({
+      name: 'movies',
+    //prefetch: '/q?cities=B',
+      remote: '/moviesearch?q=%QUERY',
+      limit: 10
+      });
+  </script>
+  </body>
+</html>
