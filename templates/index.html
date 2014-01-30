@@ -11,16 +11,23 @@
   </div>
 </div><!-- /.container -->
 
-<div id="controlpanel">
-  <center>
-      <p class="lead">Search for your address to get filming locations near you.</p>
-      <input id="address_search" type="text" placeholder="Address" size=40%>
-      <br>
-      <button id="getmovie" onclick='getMovie();'>Get Movies Near Me</button>
-  </center>
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <center>
+        <p class="lead">Search for your address to get filming locations near you.</p>
+        <input id="address_search" type="text" placeholder="Address">
+        <br>
+        <button id="getmovie" onclick='getMovie();'>Get Movies Near Me</button>
+      </center>
+    </div>
+    <div class="col-md-9">
+      <div id="mappanel">
+        <div class="well"><div id="map-canvas"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div id="mappanel">
-  <div class="well"><div id="map-canvas"></div>
-</div>
+
 {% endblock %}

@@ -13,8 +13,6 @@ var iterator;
 var infowindow = null;
 var thismap_center;
 var thismap_zoom;
-
-
 var allcontent = [];
 
 function loadScript() {
@@ -66,15 +64,13 @@ function initialize() {
 
 }
 
-
-
 // Drop the markers
 function drop() {
   deleteMarkers();
   dropMarkerlist();
 }
 
-
+// Adjusting the map such that the markers are visible.
 function seeMarkers() {
   bounds = map.getBounds();
   var min_lat = map.getCenter().lat();
@@ -116,15 +112,22 @@ function dropMarkerlist(){
   // Get the locations from the database
   var movie = $('#moviesearch').val();
   $.get('/locations?title='+movie, function(result) {
-      makeMarkers(result);
-      // Adjust the map so you can see the markers
-      seeMarkers();
-  
-      // Drop the markers
-      for (var i = 0; i < movie_latlong.length; i++) {
-        setTimeout(function() {
-          markers = addMarker();
-        }, i * 200);
+    var quickcheck = eval(result)
+      if (!(quickcheck[0][0]==="Title not found")) {
+        makeMarkers(result);
+        console.log(result);
+        // Adjust the map so you can see the markers
+        seeMarkers();
+        
+        // Drop the markers
+        for (var i = 0; i < movie_latlong.length; i++) {
+          setTimeout(function() {
+            markers = addMarker();
+          }, i * 200);
+        }
+      }
+      else {
+        $('#moviesearch').val('Title not found');
       }
   });
 }
@@ -216,6 +219,8 @@ function dropNearbyMovies(LatLongObject){
   });
 }
 
+// Here I am creating the Google markers from lat/long pairs and getting the information about the movie location into
+// the info windows.
 function makeMarkers(result){
       JSONwaypoints = eval(result);
       console.log(JSONwaypoints);

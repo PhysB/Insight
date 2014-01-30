@@ -7,20 +7,26 @@
         <div class="page-header">
           <h1>On Location</h1>
         </div>
-
     </div>
   </div>
 </div><!-- /.container -->
 
-<div id="controlpanel">
-  <center>
-      <p class="lead">Search for a movie to see its filming locations.</p>
-      <input id="moviesearch" type="text" placeholder="Movie title" size=40%>
-      <br>
-      <button id="findmovie" onclick='drop();'>Search</button>
-  </center>
-</div>
-<div id="mappanel">
-<div class="well"><div id="map-canvas"></div>
-</div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <center>
+        <p class="lead">Search for a movie to see its filming locations.</p>
+        <input id="moviesearch" type="text" placeholder="Movie title">
+        <br>
+        <button id="findmovie" onclick='drop();'>Search</button>
+      </center>
+    </div>
+    <div class="col-md-9">
+      <div id="mappanel">
+        <div class="well"><div id="map-canvas"></div>
+      </div>
+    </div>
+  </div>
+</div>    
+    
 {% endblock %}

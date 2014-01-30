@@ -23,22 +23,27 @@ def locations():
     query_results = db.store_result().fetch_row(maxrows=0)
     print query_results
     address = []
-    for i,result in enumerate(query_results):
-        address.append({str(i): (str(result[0]),float(result[1]),float(result[2]),str(result[3]),str(result[4]),str(result[5]))})
-    return json.dumps(address)
+    if query_results:
+        for i,result in enumerate(query_results):
+            address.append({str(i): (str(result[0]),float(result[1]),float(result[2]),str(result[3]),str(result[4]),str(result[5]))})
+        return json.dumps(address)
+    else:
+        notfounddict = [{"0":"Title not found"}]
+        return json.dumps(notfounddict)
 
 @app.route('/moviesearch')
 def moviesearch():
     q = request.args.get('q')
-    thisquery = 'SELECT title FROM locations_with_description WHERE title LIKE "{}%" LIMIT 10;'.format(q)
+    thisquery = 'SELECT DISTINCT title FROM locations_with_description WHERE title LIKE "{}%" LIMIT 10;'.format(q)
     print thisquery
     db.query(thisquery)
     query_results = db.store_result().fetch_row(maxrows=0)
-    print query_results
+    #print query_results
     movies = []
     for i,result in enumerate(query_results):
         movies.append(result[0])
     return json.dumps(movies)
+    
 
 @app.route('/nearby')
 def nearby():
