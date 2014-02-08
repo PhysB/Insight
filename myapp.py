@@ -6,7 +6,7 @@ import math
 from app_helperfunctions import calcDist, filterResults, searchNearby
 
 app = Flask(__name__)
-db = MySQLdb.connect(user="root", host="localhost", port=3306, db="movie_locations")
+db = MySQLdb.connect(user="root", host="localhost", port=3306, db="movie_locations",passwd="Fuzz1Bunn1")
 
 @app.route("/")
 def hello():
