@@ -202,8 +202,9 @@ function getMovie() {
 // Create LatLng objects from the returned list of latitudes and longitudes for a movie.
 function dropNearbyMovies(LatLongObject){
   // Get the locations from the database
-    latitude = LatLongObject.d
-    longitude = LatLongObject.e
+    console.log(LatLongObject);
+    latitude = LatLongObject.k
+    longitude = LatLongObject.A
     $.get('/nearby?latitude='+latitude+'&longitude='+longitude, function(result) {
     // Make the marker and info windows
     makeMarkers(result);
